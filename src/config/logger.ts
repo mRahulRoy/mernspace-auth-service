@@ -20,6 +20,13 @@ const logger = winston.createLogger({
             level: 'error',
             silent: Config.NODE_ENV === 'test',
         }),
+        new winston.transports.Console({
+            level: 'info',
+            format: winston.format.combine(
+                winston.format.timestamp(),
+                winston.format.json(),
+            ),
+        }),
     ],
 });
 
