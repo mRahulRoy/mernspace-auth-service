@@ -1,4 +1,10 @@
 function login(username: string): string {
-    return username;
+    const obj = {
+        name: 'rahul',
+    };
+
+    const name = obj.name;
+
+    return username + name;
 }
 login('rahul');
