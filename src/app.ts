@@ -5,7 +5,7 @@ const app = express();
 
 // eslint-disable-next-line @typescript-eslint/require-await
 app.get('/', async (req, res) => {
-    res.send('welcome to mern practice');
+    res.status(200).send('welcome to mern practice');
 });
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
