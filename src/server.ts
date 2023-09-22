@@ -1,5 +1,4 @@
-function login(username: string): boolean {
-  console.log(username);
-  return true;
+function login(username: string): string {
+    return username;
 }
-login("rahul") 
+login('rahul');
