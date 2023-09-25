@@ -2,11 +2,14 @@ import express, { NextFunction, Request, Response } from 'express';
 import logger from './config/logger';
 import { HttpError } from 'http-errors';
 const app = express();
+import authRouter from './routes/auth';
 
 // eslint-disable-next-line @typescript-eslint/require-await
 app.get('/', async (req, res) => {
     res.status(200).send('welcome to mern practice');
 });
+
+app.use('/auth', authRouter);
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 app.use((err: HttpError, req: Request, res: Response, next: NextFunction) => {
