@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import express, { NextFunction, Request, Response } from 'express';
 import logger from './config/logger';
 import { HttpError } from 'http-errors';
@@ -6,7 +7,7 @@ import authRouter from './routes/auth';
 
 // eslint-disable-next-line @typescript-eslint/require-await
 app.get('/', async (req, res) => {
-    res.status(200).send('welcome to mern practice');
+    res.status(200).send(`<h1>Welcome to mern practice</h1>`);
 });
 
 app.use('/auth', authRouter);

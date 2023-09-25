@@ -45,6 +45,21 @@ describe('POST /auth/register', () => {
                 (response.headers as Record<string, string>)['content-type'],
             ).toEqual(expect.stringContaining('json'));
         });
+
+        it('should persist user in the database', async () => {
+            // Arrange
+            const userData = {
+                name: 'Rahul',
+                lastName: 'Kumar',
+                email: 'rahulroy177602@gmail.com',
+                password: '123',
+            };
+            // Act
+
+            await request(app).post('/auth/register').send(userData);
+
+            // Assert
+        });
     });
 
     // sad path
@@ -54,7 +69,7 @@ describe('POST /auth/register', () => {
 /*
 NOTES
 
-there are technique or formula that we use to write test cases.
+there is a technique or a formula that we use to write test cases.
             Which is AAA
 Arange -> Arrange means arrange all the required data.
 Act ->  Performa main work like caaling endpoints etc
