@@ -5,11 +5,11 @@ import { HttpError } from 'http-errors';
 const app = express();
 import authRouter from './routes/auth';
 
-// eslint-disable-next-line @typescript-eslint/require-await
+app.use(express.json());
+
 app.get('/', async (req, res) => {
     res.status(200).send(`<h1>Welcome to mern practice</h1>`);
 });
-
 app.use('/auth', authRouter);
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

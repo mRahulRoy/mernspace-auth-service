@@ -1,13 +1,33 @@
 import request = require('supertest');
 import app from '../../src/app';
+import { DataSource } from 'typeorm';
+import { AppDataSource } from '../../src/config/data-source';
+import { truncateTables } from '../utils';
+import { User } from '../../src/entity/User';
 
 describe('POST /auth/register', () => {
+    let connection: DataSource;
+
+    // This jest hook runs once before running the test cases
+    beforeAll(async () => {
+        connection = await AppDataSource.initialize();
+    });
+
+    //truncating Db before performing any new test cases, its important to do so that we can avoid tests conflicting to previous tests.
+    beforeEach(async () => {
+        await truncateTables(connection);
+    });
+    //closing the DB connection after performong all the test cases.
+    afterAll(async () => {
+        await connection.destroy();
+    });
+
     // happy path
     describe('Given all fields', () => {
         it('should return 201', async () => {
             // Arrange
             const userData = {
-                name: 'Rahul',
+                firstName: 'Rahul',
                 lastName: 'Kumar',
                 email: 'rahulroy177602@gmail.com',
                 password: '123',
@@ -23,7 +43,7 @@ describe('POST /auth/register', () => {
         it('should return valid json reponse', async () => {
             // Arrange
             const userData = {
-                name: 'Rahul',
+                firstName: 'Rahul',
                 lastName: 'Kumar',
                 email: 'rahulroy177602@gmail.com',
                 password: '123',
@@ -49,7 +69,7 @@ describe('POST /auth/register', () => {
         it('should persist user in the database', async () => {
             // Arrange
             const userData = {
-                name: 'Rahul',
+                firstName: 'Rahul',
                 lastName: 'Kumar',
                 email: 'rahulroy177602@gmail.com',
                 password: '123',
@@ -57,8 +77,14 @@ describe('POST /auth/register', () => {
             // Act
 
             await request(app).post('/auth/register').send(userData);
-
             // Assert
+            const userRepository = connection.getRepository(User);
+            const user = await userRepository.find();
+            expect(user).toHaveLength(1);
+            //Here making sure if the above exact above data is getting stored in db or not.
+            expect(user[0].firstName).toBe(userData.firstName);
+            expect(user[0].lastName).toBe(userData.lastName);
+            expect(user[0].email).toBe(userData.email);
         });
     });
 
