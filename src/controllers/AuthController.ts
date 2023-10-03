@@ -19,6 +19,7 @@ export class AuthController {
             lastName,
             email,
             password: '******',
+            role: 'customer',
         });
         try {
             const user = await this.userService.create({
@@ -30,6 +31,7 @@ export class AuthController {
             this.logger.info('User has been registered succesfully!');
             res.status(201).json({
                 id: user.id,
+                role: user.role,
             });
         } catch (error) {
             next(error);
