@@ -4,7 +4,6 @@ import { UserData } from '../types';
 import createHttpError from 'http-errors';
 import { Roles } from '../constants';
 import bcrypt from 'bcrypt';
-import logger from '../config/logger';
 
 export class UserService {
     constructor(private userRepository: Repository<User>) {}
@@ -31,9 +30,6 @@ export class UserService {
                 role: Roles.CUSTOMER,
             });
         } catch (err) {
-            // console.log(err)
-            logger.info('called');
-
             const error = createHttpError(
                 500,
                 'Failed to store data in the database',

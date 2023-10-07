@@ -170,7 +170,28 @@ describe('POST /auth/register', () => {
     });
 
     // sad path
-    describe('Fileds are missing', () => {});
+    describe('Fileds are missing', () => {
+        it('should return 400 status code if email field is missing', async () => {
+            // Arrange
+            const userData = {
+                firstName: 'Rahul',
+                lastName: 'Kumar',
+                email: '',
+                password: '123',
+            };
+
+            const userRepository = connection.getRepository(User);
+            // Act
+            const response = await request(app)
+                .post('/auth/register')
+                .send(userData);
+
+            const users = await userRepository.find({});
+            //Assert
+            expect(response.statusCode).toBe(400);
+            expect(users).toHaveLength(0);
+        });
+    });
 });
 
 /*
@@ -179,7 +200,7 @@ NOTES
 there is a technique or a formula that we use to write test cases.
             Which is AAA
 Arange -> Arrange means arrange all the required data.
-Act ->  Performa main work like caaling endpoints etc
+Act ->  Performa main work like calling endpoints etc
 Assert -> Here checks if we are getting expected output or not.
 
 */
