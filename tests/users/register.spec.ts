@@ -123,6 +123,50 @@ describe('POST /auth/register', () => {
             expect(user[0]).toHaveProperty('role');
             expect(user[0].role).toBe(Roles.CUSTOMER);
         });
+
+        it('should store the hashed password in the database', async () => {
+            // Arrange
+            const userData = {
+                firstName: 'Rahul',
+                lastName: 'Kumar',
+                email: 'rahulroy177602@gmail.com',
+                password: '123',
+            };
+            // Act
+            await request(app).post('/auth/register').send(userData);
+            // Assert
+            const userRepository = connection.getRepository(User);
+            const user = await userRepository.find();
+            expect(user[0].password).not.toBe(userData.password);
+            expect(user[0].password).toHaveLength(60);
+            //Here this regex is bassically checking if the hashed password is starting with '$2b' and next if it has '$ follwed by any positive integer' and after  that it should have '$' too.
+            //basically it should look like this '$2b$10$'
+            expect(user[0].password).toMatch(/^\$2b\$\d+\$/);
+        });
+
+        it('should return 400 status code if email already exists', async () => {
+            // Arrange
+            const userData = {
+                firstName: 'Rahul',
+                lastName: 'Kumar',
+                email: 'rahulroy177602@gmail.com',
+                password: '123',
+            };
+            const userRepository = connection.getRepository(User);
+            //storing a user directly into the db
+            await userRepository.save({ ...userData, role: Roles.CUSTOMER });
+
+            // Act
+            const response = await request(app)
+                .post('/auth/register')
+                .send(userData);
+
+            const users = await userRepository.find();
+
+            //Assert
+            expect(response.statusCode).toBe(400);
+            expect(users).toHaveLength(1);
+        });
     });
 
     // sad path

@@ -19,7 +19,6 @@ export class AuthController {
             lastName,
             email,
             password: '******',
-            role: 'customer',
         });
         try {
             const user = await this.userService.create({
