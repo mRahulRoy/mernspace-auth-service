@@ -283,6 +283,26 @@ describe('POST /auth/register', () => {
             expect(response.statusCode).toBe(400);
             expect(users).toHaveLength(0);
         });
+        it('should return an array of error messages if email is missing', async () => {
+            // Arrange
+            const userData = {
+                firstName: '',
+                lastName: 'Kumar',
+                email: 'rahul@gmail.com',
+                password: '223',
+            };
+
+            // Act
+
+            const response = await request(app)
+                .post('/auth/register')
+                .send(userData);
+            // Assert
+
+            expect(
+                (response.body as Record<string, string>).errors.length,
+            ).toBeGreaterThan(0);
+        });
     });
 
     //Formating test cases
@@ -339,26 +359,6 @@ describe('POST /auth/register', () => {
                 .send(userData);
             // Assert
             expect(response.statusCode).toBe(400);
-        });
-        it('should return an array of error messages if email is missing', async () => {
-            // Arrange
-            const userData = {
-                firstName: '',
-                lastName: 'Kumar',
-                email: 'rahul@gmail.com',
-                password: '223',
-            };
-
-            // Act
-
-            const response = await request(app)
-                .post('/auth/register')
-                .send(userData);
-            // Assert
-
-            expect(
-                (response.body as Record<string, string>).errors.length,
-            ).toBeGreaterThan(0);
         });
     });
 });
