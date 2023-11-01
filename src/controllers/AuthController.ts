@@ -136,6 +136,7 @@ export class AuthController {
 
             const accessToken = this.tokenService.generateAccessToken(payload);
 
+            //creating a refresh token record/document/row only not storing that token in db.
             const newRefreshToken =
                 await this.tokenService.persistRefreshToken(user);
 
@@ -171,7 +172,7 @@ export class AuthController {
 
     async self(req: AuthRequest, res: Response) {
         const user = await this.userService.findById(Number(req.auth.sub));
-        res.json(user);
+        res.json({ ...user, password: undefined });
     }
 }
 

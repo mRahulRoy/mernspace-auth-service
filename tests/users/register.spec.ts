@@ -138,7 +138,7 @@ describe('POST /auth/register', () => {
             await request(app).post('/auth/register').send(userData);
             // Assert
             const userRepository = connection.getRepository(User);
-            const user = await userRepository.find();
+            const user = await userRepository.find({ select: ['password'] });
             expect(user[0].password).not.toBe(userData.password);
             expect(user[0].password).toHaveLength(60);
             //Here this regex is bassically checking if the hashed password is starting with '$2b' and next if it has '$ follwed by any positive integer' and after  that it should have '$' too.
