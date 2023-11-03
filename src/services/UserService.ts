@@ -18,10 +18,10 @@ export class UserService {
             throw err;
         }
 
+        //Hashing the password
+        const saltRounds = 10;
+        const hasedPassword = await bcrypt.hash(password, saltRounds);
         try {
-            //Hashing the password
-            const saltRounds = 10;
-            const hasedPassword = await bcrypt.hash(password, saltRounds);
             return await this.userRepository.save({
                 firstName,
                 lastName,

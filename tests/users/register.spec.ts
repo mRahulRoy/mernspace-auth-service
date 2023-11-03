@@ -155,7 +155,7 @@ describe('POST /auth/register', () => {
                 password: '123456789',
             };
             const userRepository = connection.getRepository(User);
-            //storing a user directly into the db
+            //storing this user directly into the db so that we can again try to register the same user with the same email and other data.
             await userRepository.save({ ...userData, role: Roles.CUSTOMER });
 
             // Act
