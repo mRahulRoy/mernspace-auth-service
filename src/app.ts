@@ -6,6 +6,7 @@ import { HttpError } from 'http-errors';
 const app = express();
 import authRouter from './routes/auth';
 import tenantRouter from './routes/tenant';
+import userRouter from './routes/user';
 
 app.use(cookieParser());
 app.use(express.json());
@@ -16,6 +17,7 @@ app.get('/', async (req, res) => {
 });
 app.use('/auth', authRouter);
 app.use('/tenants', tenantRouter);
+app.use('/users', userRouter);
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 app.use((err: HttpError, req: Request, res: Response, next: NextFunction) => {
