@@ -6,6 +6,7 @@ export interface UserData {
     password: string;
     email: string;
     role: string;
+    tenantId?: number;
 }
 export interface RegisterUserRequest extends Request {
     body: UserData;
@@ -26,6 +27,15 @@ export type AuthCookie = {
 
 export interface IRefreshTokenPayload {
     id: string;
+}
+
+export interface ITenant {
+    name: string;
+    address: string;
+}
+
+export interface CreateTenantRequest extends Request {
+    body: ITenant;
 }
 
 export interface ITenants {

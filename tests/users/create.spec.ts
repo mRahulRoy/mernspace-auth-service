@@ -5,6 +5,8 @@ import app from '../../src/app';
 import createJWKSMock from 'mock-jwks';
 import { Roles } from '../../src/constants';
 import { User } from '../../src/entity/User';
+import { createTenant } from '../utils';
+import { Tenant } from '../../src/entity/Tenants';
 
 describe('POST /users', () => {
     let connection: DataSource;
@@ -35,6 +37,8 @@ describe('POST /users', () => {
     // happy path
     describe('Given all fields', () => {
         it('should persist the user in the database', async () => {
+            //Create the tenant first
+            const tenant = await createTenant(connection.getRepository(Tenant));
             const adminToken = jwks.token({ sub: '1', role: Roles.ADMIN });
 
             // Register user
@@ -43,7 +47,8 @@ describe('POST /users', () => {
                 lastName: 'K',
                 email: 'rakesh@mern.space',
                 password: 'password',
-                tenantId: 1,
+                role: Roles.MANAGER,
+                tenantId: tenant.id,
             };
 
             // Add token to cookie
@@ -58,7 +63,11 @@ describe('POST /users', () => {
 
             expect(users[0].email).toBe(userData.email);
         });
+
         it('should create a manager user', async () => {
+            //Create the tenant first
+            const tenant = await createTenant(connection.getRepository(Tenant));
+
             const adminToken = jwks.token({ sub: '1', role: Roles.ADMIN });
 
             // Register user
@@ -67,14 +76,16 @@ describe('POST /users', () => {
                 lastName: 'K',
                 email: 'rakesh@mern.space',
                 password: 'password',
-                tenantId: 1,
+                role: Roles.MANAGER,
+                tenantId: tenant.id,
             };
 
             // Add token to cookie
-            await request(app)
+            const res = await request(app)
                 .post('/users')
                 .set('Cookie', [`accessToken=${adminToken};`])
                 .send(userData);
+
             const userRepository = connection.getRepository(User);
             const users = await userRepository.find();
             // Assert
