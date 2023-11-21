@@ -5,11 +5,9 @@ module.exports = {
     preset: 'ts-jest',
     testEnvironment: 'node',
     verbose: true,
-    collectCoverage:true,
-    coverageProvider:"v8",
-    collectCoverageFrom:[
-        "src/**/*.ts",
-        "!tests/**",
-        "!**/node_modules/**"
-    ]
+    // here we are enabling the test coverage
+    collectCoverage: true,
+    coverageProvider: 'v8',
+    //Mentioning here which file/folder to include and exclude in the coverage.
+    collectCoverageFrom: ['src/**/*.ts', '!tests/**', '!**/node_modules/**'],
 };

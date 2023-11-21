@@ -68,7 +68,7 @@ export class TenantController {
 
     async getOne(req: Request, res: Response, next: NextFunction) {
         const tenantId = req.params.id;
-
+        //validating if the passed paramater in url is a valid interger or not.
         if (isNaN(Number(tenantId))) {
             next(createHttpError(400, 'Invalid url param.'));
             return;

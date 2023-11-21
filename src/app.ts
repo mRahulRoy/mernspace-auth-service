@@ -13,8 +13,14 @@ app.use(express.json());
 app.use(express.static('public'));
 
 app.get('/', async (req, res) => {
-    res.status(200).send(`<h1>Welcome to mern practice</h1>`);
+    res.status(200)
+        .send(` <div style="height:90vh;width:100%;display:flex;justify-content:center;align-items:center;flex-direction:column">
+    <h2 style="font-family:cursive">Welcome Back, Rahul</h2>
+    <h2 style="font-family:cursive">You are so cool ;)</h2>
+  </div>`);
 });
+
+// registering routes
 app.use('/auth', authRouter);
 app.use('/tenants', tenantRouter);
 app.use('/users', userRouter);
