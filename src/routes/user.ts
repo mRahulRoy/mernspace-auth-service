@@ -1,4 +1,4 @@
-import express, { Request, Response } from 'express';
+import express, { Request, RequestHandler, Response } from 'express';
 import authenticate from '../middlewares/authenticate';
 import { canAccess } from '../middlewares/canAccess';
 import { Roles } from '../constants';
@@ -19,29 +19,29 @@ const userController = new UserController(userService);
 router
     .route('/')
     .post(
-        authenticate,
+        authenticate as RequestHandler,
         canAccess([Roles.ADMIN]),
         createUserValidator,
         (req: CreateUserRequest, res: Response, next: NextFunction) =>
-            userController.create(req, res, next),
+            userController.create(req, res, next) as unknown as RequestHandler,
     );
 
 router
     .route('/')
     .get(
-        authenticate,
+        authenticate as RequestHandler,
         canAccess([Roles.ADMIN]),
         (req: Request, res: Response, next: NextFunction) =>
-            userController.getAll(req, res, next),
+            userController.getAll(req, res, next) as unknown as RequestHandler,
     );
 
 router
     .route('/:id')
     .get(
-        authenticate,
+        authenticate as RequestHandler,
         canAccess([Roles.ADMIN]),
         (req: Request, res: Response, next: NextFunction) =>
-            userController.getOne(req, res, next),
+            userController.getOne(req, res, next) as unknown as RequestHandler,
     );
 
 export default router;
