@@ -14,3 +14,6 @@
 ##To Run Build File
 
 > $env:NODE_ENV = "dev"; node .\src\server.js
+
+### show existing docker images
+> docker image ls

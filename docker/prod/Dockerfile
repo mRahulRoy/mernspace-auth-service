@@ -1,9 +1,7 @@
 FROM node:18-alpine as builder
 
 WORKDIR /app
-
 COPY package*.json ./
-
 RUN npm ci 
 COPY . .
 RUN npm run build
@@ -16,5 +14,5 @@ COPY package*.json ./
 RUN npm ci --ignore-scripts
 COPY --from=builder /app/dist ./
 EXPOSE 5500
-cmd ["node","src/server.js"]
+CMD ["node","src/server.js"]
 
