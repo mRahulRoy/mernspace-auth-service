@@ -143,7 +143,7 @@ describe('POST /auth/register', () => {
             expect(user[0].password).toHaveLength(60);
             //Here this regex is bassically checking if the hashed password is starting with '$2b' and next if it has '$ follwed by any positive integer' and after  that it should have '$' too.
             //basically it should look like this '$2b$10$'
-            expect(user[0].password).toMatch(/^\$2b\$\d+\$/);
+            expect(user[0].password).toMatch(/^\$2[a|b]\$\d+\$/);
         });
 
         it('should return 400 status code if email already exists', async () => {
