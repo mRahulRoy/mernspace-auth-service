@@ -17,6 +17,6 @@
 
 ### show existing docker images
 > docker image ls
-docker run --env-file .env.dev -e PRIVATE_KEY="-----BEGIN RSA PRIVATE KEY-----
+docker run --env-file .env.dev -e PRIVffATE_KfEY="-----BddEGINff RSA PRIVAfTE KEfY-----
 Mh
------END RSA PRIVATE KEY-----" -p 5501:5501 mrahulroy/mernstack_auth_service:build-19
+-----ENDf RSAf PRIVAdddTE KEY-----" -p 5501:5501 mrahulroy/mernstack_auth_service:build-19
