@@ -7,7 +7,7 @@ import { Roles } from '../../src/constants';
 import { User } from '../../src/entity/User';
 import { createTenant } from '../utils';
 import { Tenant } from '../../src/entity/Tenants';
-
+import { instantiateAdminUser } from '../../src/config/utils';
 describe('POST /users', () => {
     let connection: DataSource;
     let jwks: ReturnType<typeof createJWKSMock>;
@@ -81,7 +81,7 @@ describe('POST /users', () => {
             };
 
             // Add token to cookie
-            const res = await request(app)
+            await request(app)
                 .post('/users')
                 .set('Cookie', [`accessToken=${adminToken};`])
                 .send(userData);
@@ -92,6 +92,27 @@ describe('POST /users', () => {
             expect(users).toHaveLength(1);
 
             expect(users[0].role).toBe(Roles.MANAGER);
+        });
+
+        it('should create initial admin user in the system', async () => {
+            const userRepository = connection.getRepository(User);
+            const adminData = {
+                firstName: 'Admin',
+                lastName: 'User',
+                email: 'admin001@gmail.com',
+                password: '1234567****',
+                role: 'admin',
+            };
+            await instantiateAdminUser(adminData);
+            const initialAdmin = await userRepository.find({
+                where: {
+                    email: adminData.email,
+                    role: 'admin',
+                },
+            });
+            expect(initialAdmin[0].email).toBe(adminData.email);
+            expect(initialAdmin[0].role).toEqual('admin');
+            expect(initialAdmin).toHaveLength(1);
         });
 
         it.todo('should return 403 if non Admin user tries to create a user');

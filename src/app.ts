@@ -3,12 +3,20 @@ import express, { NextFunction, Request, Response } from 'express';
 import cookieParser from 'cookie-parser';
 import logger from './config/logger';
 import { HttpError } from 'http-errors';
+import cors from 'cors';
 const app = express();
 import authRouter from './routes/auth';
 import tenantRouter from './routes/tenant';
 import userRouter from './routes/user';
 
 app.use(cookieParser());
+app.use(
+    cors({
+        //todo : move this to env
+        origin: ['http://localhost:5173'],
+        credentials: true,
+    }),
+);
 app.use(express.json());
 app.use(express.static('public'));
 
