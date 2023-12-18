@@ -26,7 +26,7 @@ describe('POST /auth/register', () => {
         await connection.destroy();
     });
 
-    // happy path
+    // happy path0
     describe('Given all fields', () => {
         it('should return 201', async () => {
             // Arrange

@@ -15,7 +15,7 @@ const userRepository = AppDataSource.getRepository(User);
 const userService = new UserService(userRepository);
 const userController = new UserController(userService);
 
-//Here we have first added the authenticate middleware and then we have passed a another middleware that checks if the current user is admin or not. becouse only admin are allowed to create tenants.
+//Here we have first added the authenticate middleware and then we have passed a another middleware that checks if the current user is admin or not. becouse only admin are allowed to create users.
 router
     .route('/')
     .post(
