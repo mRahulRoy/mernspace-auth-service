@@ -1,3 +1,5 @@
+import { Config } from '../config';
+
 export const Roles = {
     ADMIN: 'admin',
     CUSTOMER: 'customer',
@@ -9,5 +11,5 @@ export const firstAdmin = {
     firstName: 'Admin',
     lastName: 'User',
     email: 'admin001@gmail.com',
-    password: '12345678',
+    password: Config.FIRST_ADMIN_PASSWORD,
 };
