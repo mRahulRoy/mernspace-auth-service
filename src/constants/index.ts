@@ -11,5 +11,5 @@ export const firstAdmin = {
     firstName: 'Admin',
     lastName: 'User',
     email: 'admin001@gmail.com',
-    password: Config.FIRST_ADMIN_PASSWORD,
+    password: String(Config.FIRST_ADMIN_PASSWORD),
 };
