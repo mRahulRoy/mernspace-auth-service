@@ -18,10 +18,11 @@ export const instantiateAdminUser = async ({
         const isAdmin = await userRepository.findOne({ where: { email } });
         if (isAdmin) {
             //no need to create a new admin user since its already there.
-            return;
+            return false;
         } else {
             const saltRounds = 10;
             const hashedPassword = await Bcrypt.hash(password, saltRounds);
+
             const data = {
                 email,
                 password: hashedPassword,
