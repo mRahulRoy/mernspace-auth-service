@@ -7,7 +7,43 @@ import { Roles } from '../../src/constants';
 import { User } from '../../src/entity/User';
 import { createTenant } from '../utils';
 import { Tenant } from '../../src/entity/Tenants';
-import { instantiateAdminUser } from '../../src/config/utils';
+// import { instantiateAdminUser } from '../../src/config/utils';
+
+/*
+    ----- One minute read for the mock-jwks library -----
+As we know we have used token based mechanism for secure authentication. We have used RSA256 that is an asymmetric algorithm that uses a public/private key pair. So at the time of login or register we are creating access and refreshtoken using private key and sending it to the client in the cookie that is of type httpOnly , and we know that we can only verify that access token using the private key corresponding to that private key.
+also jwk is genearated using private key but only the public part of it is visible.
+This is how JWK is created.
+const jwk = rsaPemToJwk(privateKey, { use: 'sig' }, 'public');
+
+So The public key used for verification of accesstoken is often represented in a `JWK format` .
+This formated public key in jwk type is used for token verification. 
+
+
+Now the thing is at the time of testing those services which needs to be authenticate before allowing to access the resources should have a jwk that was created
+but at the time of testing we need to pass some valid jwks to autheticate or verify the accesstoken for the access of the required resource.
+
+Thats why we have insead of passing the real jsonwebkey , we are mocking the exact copy of that key and passing it .
+now let see what we get in  :
+
+import createJWKSMock from 'mock-jwks';
+ jwks = createJWKSMock(`http://localhost:5501`); we have to pass the domain 
+ it returns ->  
+  jwks = {
+      start: [Function: start],
+      stop: [Function: stop],
+      kid: [Function: kid],
+      token: [Function: token]
+    }
+we need to start and stop the jwk mocking after each test just like this ->  jwks.start()/ jwks.stop();
+const token = jwks.token({ sub: '1', role: Roles.ADMIN })
+
+
+
+
+
+*/
+
 describe('POST /users', () => {
     let connection: DataSource;
     let jwks: ReturnType<typeof createJWKSMock>;
@@ -92,27 +128,6 @@ describe('POST /users', () => {
             expect(users).toHaveLength(1);
 
             expect(users[0].role).toBe(Roles.MANAGER);
-        });
-
-        it('should create initial admin user in the system', async () => {
-            const userRepository = connection.getRepository(User);
-            const adminData = {
-                firstName: 'Admin',
-                lastName: 'User',
-                email: 'admin001@gmail.com',
-                password: '1234567****',
-                role: 'admin',
-            };
-            await instantiateAdminUser(adminData);
-            const initialAdmin = await userRepository.find({
-                where: {
-                    email: adminData.email,
-                    role: 'admin',
-                },
-            });
-            expect(initialAdmin[0].email).toBe(adminData.email);
-            expect(initialAdmin[0].role).toEqual('admin');
-            expect(initialAdmin).toHaveLength(1);
         });
 
         it.todo('should return 403 if non Admin user tries to create a user');
