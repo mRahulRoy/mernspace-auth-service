@@ -36,7 +36,7 @@ export class UserController {
     async getAll(req: CreateUserRequest, res: Response, next: NextFunction) {
         try {
             const users = await this.userService.getAll();
-            res.status(200).json({ users });
+            res.status(200).json(users);
         } catch (error) {
             next(error);
         }
@@ -45,7 +45,7 @@ export class UserController {
         try {
             const id = req.params.id;
             const users = await this.userService.getOne(Number(id));
-            res.status(200).json({ users });
+            res.status(200).json(users);
         } catch (error) {
             next(error);
         }

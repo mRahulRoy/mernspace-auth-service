@@ -48,7 +48,6 @@ describe('admin tests', () => {
                 role: 'admin',
             },
         });
-        console.log('password : ', initialAdmin[0]);
         expect(retrySignup).toBeFalsy();
         expect(initialAdmin[0].email).toBe(adminData.email);
         expect(initialAdmin[0].role).toEqual('admin');

@@ -225,6 +225,14 @@ export class AuthController {
         }
     }
 
+    /*
+    explanation of why we have multiple refreshToken for same user.
+    Since one user can login to multiple devices so it should not be like if a user logouts from the one device it will logout that user from the other devices as well .
+    so each refreshToken represents the number of devices in which user is curren;tly logged-In.
+    so when a user clicks on logout , it then sends a refreshToken from the cookie to server than there server validates if this valid or not if its valid then that middlewate sets the refreshToken in the req' auth object and returns , then actul logout function gets called and from there using req.auth.id which is tokenId , we find it in db and delets it. in this way a user logsOut from that particular device.
+
+    
+    */
     async logout(req: AuthRequest, res: Response, next: NextFunction) {
         try {
             await this.tokenService.deleteRefreshToken(Number(req.auth.id));
