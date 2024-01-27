@@ -66,6 +66,8 @@ export class UserService {
             },
         });
     }
+
+    //study querybuilder
     async getAll(validatedQuery: UserQueryParams) {
         const queryBuilder = this.userRepository.createQueryBuilder('user');
         if (validatedQuery.q) {
