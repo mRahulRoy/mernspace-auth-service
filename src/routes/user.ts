@@ -1,4 +1,5 @@
-import express, { Request, RequestHandler, Response } from 'express';
+import express, { RequestHandler, Response } from 'express';
+import { Request } from 'express-jwt';
 import authenticate from '../middlewares/authenticate';
 import { canAccess } from '../middlewares/canAccess';
 import { Roles } from '../constants';
@@ -9,6 +10,7 @@ import { User } from '../entity/User';
 import createUserValidator from '../validators/create-user-validator';
 import { CreateUserRequest } from '../types';
 import { NextFunction } from 'express-serve-static-core';
+import listUsersValidators from '../validators/list-users-validators';
 
 const router = express.Router();
 const userRepository = AppDataSource.getRepository(User);
@@ -31,6 +33,7 @@ router
     .get(
         authenticate as RequestHandler,
         canAccess([Roles.ADMIN]),
+        listUsersValidators,
         (req: Request, res: Response, next: NextFunction) =>
             userController.getAll(req, res, next) as unknown as RequestHandler,
     );
