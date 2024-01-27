@@ -1,7 +1,12 @@
 import { checkSchema } from 'express-validator';
 
-export const customFeildSantizer = (value: unknown) => {
+export const customStringFeildSantizer = (value: unknown) => {
     return value ?? '';
+};
+
+export const customIntFeildSantizer = (value: unknown) => {
+    const parsedValue = Number(value);
+    return isNaN(parsedValue) ? 1 : ~~parsedValue;
 };
 
 export default checkSchema(
@@ -9,28 +14,22 @@ export default checkSchema(
         q: {
             trim: true,
             customSanitizer: {
-                options: customFeildSantizer,
+                options: customStringFeildSantizer,
             },
         },
         role: {
             customSanitizer: {
-                options: customFeildSantizer,
+                options: customStringFeildSantizer,
             },
         },
         currentPage: {
             customSanitizer: {
-                options: (value) => {
-                    const parsedValue = Number(value);
-                    return isNaN(parsedValue) ? 1 : ~~parsedValue;
-                },
+                options: customIntFeildSantizer,
             },
         },
         perPage: {
             customSanitizer: {
-                options: (value) => {
-                    const parsedValue = Number(value);
-                    return isNaN(parsedValue) ? 6 : ~~parsedValue;
-                },
+                options: customIntFeildSantizer,
             },
         },
     },
