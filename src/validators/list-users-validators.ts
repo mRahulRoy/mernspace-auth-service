@@ -1,20 +1,20 @@
 import { checkSchema } from 'express-validator';
 
+export const customFeildSantizer = (value: unknown) => {
+    return value ?? '';
+};
+
 export default checkSchema(
     {
         q: {
             trim: true,
             customSanitizer: {
-                options: (value: unknown) => {
-                    return value ?? '';
-                },
+                options: customFeildSantizer,
             },
         },
         role: {
             customSanitizer: {
-                options: (value: unknown) => {
-                    return value ?? '';
-                },
+                options: customFeildSantizer,
             },
         },
         currentPage: {
