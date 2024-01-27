@@ -9,5 +9,5 @@ module.exports = {
     collectCoverage: true,
     coverageProvider: 'v8',
     //Mentioning here which file/folder to include and exclude in the coverage.
-    collectCoverageFrom: ['src/**/*.ts', '!tests/**', '!**/node_modules/**'],
+    collectCoverageFrom: ['src/**/*.ts', '!tests/**', '!**/node_modules/**' , "!src/types/**"  ],
 };
