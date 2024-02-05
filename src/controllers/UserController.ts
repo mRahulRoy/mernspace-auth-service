@@ -22,9 +22,7 @@ export class UserController {
         //validation
         const result = validationResult(req);
         if (!result.isEmpty()) {
-            return res.status(400).json({
-                errors: result.array(),
-            });
+            return next(createHttpError(400, result.array()[0].msg as string));
         }
         const { firstName, lastName, email, password, tenantId, role } =
             req.body;
@@ -50,15 +48,14 @@ export class UserController {
         // Validation
         const result = validationResult(req);
         if (!result.isEmpty()) {
-            return res.status(400).json({ errors: result.array() });
+            return next(createHttpError(400, result.array()[0].msg as string));
         }
 
         const { firstName, lastName, role, email, tenantId } = req.body;
         const userId = req.params.id;
 
         if (isNaN(Number(userId))) {
-            next(createHttpError(400, 'Invalid url param.'));
-            return;
+            return next(createHttpError(400, 'Invalid url param.'));
         }
 
         this.logger.debug('Request for updating a user', req.body);
@@ -106,12 +103,12 @@ export class UserController {
             next(error);
         }
     }
+
     async destroy(req: Request, res: Response, next: NextFunction) {
         const userId = req.params.id;
 
         if (isNaN(Number(userId))) {
-            next(createHttpError(400, 'Invalid url param.'));
-            return;
+            return next(createHttpError(400, 'Invalid url param.'));
         }
 
         try {
