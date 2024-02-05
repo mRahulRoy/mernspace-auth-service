@@ -58,4 +58,12 @@ router
             userController.getOne(req, res, next) as unknown as RequestHandler,
     );
 
+router.delete(
+    '/:id',
+    authenticate as RequestHandler,
+    canAccess([Roles.ADMIN]),
+    (req, res, next) =>
+        userController.destroy(req, res, next) as unknown as RequestHandler,
+);
+
 export default router;

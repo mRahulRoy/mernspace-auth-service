@@ -121,4 +121,7 @@ export class UserService {
     async getOne(id: number) {
         return await this.userRepository.findOne({ where: { id: id } });
     }
+    async deleteById(userId: number) {
+        return await this.userRepository.delete(userId);
+    }
 }
