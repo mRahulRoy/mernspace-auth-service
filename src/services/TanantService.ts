@@ -1,5 +1,5 @@
 import { Repository } from 'typeorm';
-import { ITenant, ITenants } from '../types';
+import { ITenant, ITenants, TenantQueryParams } from '../types';
 import { Tenant } from '../entity/Tenants';
 
 export class TenantService {
@@ -8,8 +8,15 @@ export class TenantService {
     async create(tenantData: ITenants) {
         return await this.tenantRepository.save(tenantData);
     }
-    async getAll() {
-        return await this.tenantRepository.find();
+    async getAll(validatedQuery: TenantQueryParams) {
+        const queryBuilder = this.tenantRepository.createQueryBuilder('tenant');
+
+        const result = await queryBuilder
+            .skip((validatedQuery.currentPage - 1) * validatedQuery.perPage)
+            .take(validatedQuery.perPage)
+            .orderBy('tenant.id', 'DESC')
+            .getManyAndCount();
+        return result;
     }
     async update(id: number, tenantData: ITenant) {
         return await this.tenantRepository.update(id, tenantData);

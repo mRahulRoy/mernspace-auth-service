@@ -14,6 +14,7 @@ import { canAccess } from '../middlewares/canAccess';
 import { Roles } from '../constants';
 import tenantValidator from '../validators/tenant-validator';
 import { CreateTenantRequest } from '../types';
+import listUsersValidators from '../validators/list-users-validators';
 
 const router = express.Router();
 const tenantRepository = AppDataSource.getRepository(Tenant);
@@ -35,16 +36,12 @@ router
             ) as unknown as RequestHandler,
     );
 
-router
-    .route('/')
-    .get(
-        (req, res, next) =>
-            tenantController.getAll(
-                req,
-                res,
-                next,
-            ) as unknown as RequestHandler,
-    );
+router.get(
+    '/',
+    listUsersValidators,
+    (req: Request, res: Response, next: NextFunction) =>
+        tenantController.getAll(req, res, next) as unknown as RequestHandler,
+);
 
 router.patch(
     '/:id',
