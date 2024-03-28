@@ -1,4 +1,0 @@
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
-# this lint-staged package executes a command present in package json what that do is , it basically formats and fixs the lint errors before performing the commit.
-npx lint-staged
